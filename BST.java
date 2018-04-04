@@ -9,7 +9,7 @@ public class BST { // Binary Search Tree implementation
     protected BST right;
     protected int frequency;
     protected int accessCount;
-    private int length;
+ //   private int length;
 
 
     public BST() {
@@ -66,14 +66,12 @@ public class BST { // Binary Search Tree implementation
         }, this);
     }
 
-    public int sumWeightedPath() {//TODO: BROKEN!
-        length = 1;
-        return inorder(tree -> {
-            if (tree.left != null)
-                tree.left.length = tree.length + 1;
-            if (tree.right != null)
-                tree.right.length = tree.length + 1;
-            return tree.length * tree.accessCount;
+    public int sumWeightedPath() {
+        return inorder(new getVal() {
+            @Override
+            public int get(BST tree) {
+                //TODO
+            }
         }, this);
     }
 
@@ -85,11 +83,15 @@ public class BST { // Binary Search Tree implementation
         int s = size();
         ArrayList<BST> nodeArr = new ArrayList<>();
         getArr(nodeArr);
-        
 
+        getRootMap(0,s-1);
 
         OBSTified = true;
     }    // Set OBSTified to true.
+
+    private void getRootMap(int low, int high){
+
+    }
 
     private void getArr(ArrayList<BST> arr) {
         if (left != null)
