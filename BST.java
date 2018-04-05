@@ -9,7 +9,7 @@ public class BST { // Binary Search Tree implementation
     protected BST right;
     protected int frequency;
     protected int accessCount;
- //   private int length;
+    private int length;
 
 
     public BST() {
@@ -67,10 +67,13 @@ public class BST { // Binary Search Tree implementation
     }
 
     public int sumWeightedPath() {
+        length = 0;
         return inorder(new getVal() {
             @Override
             public int get(BST tree) {
-                //TODO
+                if (tree.right != null) tree.right.length = tree.length + 1;
+                if (tree.left != null) tree.left.length = tree.length + 1;
+                return tree.length + tree.frequency;
             }
         }, this);
     }
@@ -79,18 +82,94 @@ public class BST { // Binary Search Tree implementation
 
     }    // Set NOBSTified to true.
 
-    public void obst() {//TODO
+    public void obst() {//TODO MUST make it O(n^2)
         int s = size();
-        ArrayList<BST> nodeArr = new ArrayList<>();
-        getArr(nodeArr);
+        ArrayList<BST> nodeArr;
+        MyHashMap<Integer> rootMap, costMap, freqSum;
+        nodeArr = new ArrayList<>();
+        rootMap = new MyHashMap<>();
+        costMap = new MyHashMap<>();
+        freqSum = new MyHashMap<>();
+        nodeArr.add(null);
 
-        getRootMap(0,s-1);
+        BST newroot = new BST();
+        newroot.element = element;
+        newroot.frequency = frequency;
+        newroot.right = right;
+        newroot.left = left;
 
+        newroot.getArr(nodeArr);
+        //nodeArr consists of every BST in order
+        //index 0 of nodeArr will have null pointer
+        //null element will be used to make empty tree point to null
+
+        for (int left = 1; left <= s; left++) {//adds frequency for every range possible
+            freqSum.put(left, left, nodeArr.get(left).frequency);
+            for (int right = left + 1; right <= s; right++)
+                freqSum.put(left, right, freqSum.get(left, right - 1) + nodeArr.get(right).frequency);
+        }
+
+        getRootMap(1, 1, s, freqSum, rootMap, costMap);
+
+
+        build(1, s, nodeArr, rootMap);
+        BST newOBSTRoot = nodeArr.get(rootMap.get(1,s));
+        element = newOBSTRoot.element;
+        frequency = newOBSTRoot.frequency;
+        right = newOBSTRoot.right;
+        left = newOBSTRoot.left;
         OBSTified = true;
     }    // Set OBSTified to true.
 
-    private void getRootMap(int low, int high){
+    private void getRootMap(int bound, int l, int r, MyHashMap<Integer> freqSum, MyHashMap<Integer> rootMap, MyHashMap<Integer> costMap) {
+        if (rootMap.containsKey(l, r))
+            return;
+        if (l == r) {
+            rootMap.put(l, r, l);
+            costMap.put(l, r, freqSum.get(l, r));
+            return;
+        } else if (l > r) {
+            rootMap.put(l, r, 0);
+            costMap.put(l, r, 0);
+            return;
+        }
+        int minCost = Integer.MAX_VALUE;
+        if(bound < l)
+            bound = l;
+        int leftRootBound = l, rightRootBound = bound+1;
+        int cost = minCost, index = l;
+        for (int i = bound; i <= r; i++) {//TODO there are cases in which loop is skipped
+            getRootMap(leftRootBound, l, i - 1, freqSum, rootMap, costMap);
+            getRootMap(rightRootBound, i + 1, r, freqSum, rootMap, costMap);
+            leftRootBound = rootMap.get(l, i - 1);
+            rightRootBound = rootMap.get(i + 1, r);
+            cost = costMap.get(l, i - 1) + costMap.get(i + 1, r) + freqSum.get(l, r);
+            if (cost < minCost) {
+                minCost = cost;
+                index = i;
+            }
+        }
+        costMap.put(l,r,cost);
+        rootMap.put(l,r,index);
 
+    }
+
+    private BST build(int left, int right, ArrayList<BST> nodeArr, MyHashMap<Integer> rootMap) {
+        if (left > right)
+            return null;
+        BST root;
+        int index;
+        index = rootMap.get(left, right);
+        root = nodeArr.get(index);
+
+
+        if (root == null)
+            return null;
+
+        root.right = build(index + 1, right, nodeArr, rootMap);
+        root.left = build(left, index - 1, nodeArr, rootMap);
+
+        return root;
     }
 
     private void getArr(ArrayList<BST> arr) {
@@ -102,8 +181,8 @@ public class BST { // Binary Search Tree implementation
     }
 
     public void print() {
-        inorder(tree -> {//TODO accessCount doubled for comparing; must be erased
-            System.out.println("[" + tree.element + ":" + tree.frequency + ":" + 2 * tree.accessCount + "]");
+        inorder(tree -> {
+            System.out.println("[" + tree.element + ":" + tree.frequency + ":" + tree.accessCount + "]");
             return 0;
         }, this);
     }
@@ -122,6 +201,26 @@ public class BST { // Binary Search Tree implementation
         accessCount = tree.accessCount;
         left = tree.left;
         right = tree.right;
+    }
+
+    private class MyHashMap<V> extends HashMap<Long, V> {//takes two keys instead of one
+
+        private V get(int key1, int key2) {
+            return super.get(getKey(key1, key2));
+        }
+
+        private boolean containsKey(int key1, int key2) {
+            return keySet().contains(getKey(key1, key2));
+        }
+
+        private void put(int key1, int key2, V obj) {
+            super.put(getKey(key1, key2), obj);
+        }
+
+        private long getKey(int x, int y) {// Cantor pairing function
+            // produces one unique key from two nonnegative integers
+            return (x + y) * (x + y + 1) / 2 + y;
+        }
     }
 
     private interface getVal {//used to recursively add certain element of all nodes
