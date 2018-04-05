@@ -66,15 +66,12 @@ public class BST { // Binary Search Tree implementation
         }, this);
     }
 
-    public int sumWeightedPath() {
-        length = 0;
-        return inorder(new getVal() {
-            @Override
-            public int get(BST tree) {
-                if (tree.right != null) tree.right.length = tree.length + 1;
-                if (tree.left != null) tree.left.length = tree.length + 1;
-                return tree.length + tree.frequency;
-            }
+    public int sumWeightedPath() {//TODO BROKEN
+        length = 1;
+        return inorder(tree -> {
+            if (tree.right != null) tree.right.length = tree.length + 1;
+            if (tree.left != null) tree.left.length = tree.length + 1;
+            return tree.length * tree.frequency;
         }, this);
     }
 
@@ -83,6 +80,7 @@ public class BST { // Binary Search Tree implementation
     }    // Set NOBSTified to true.
 
     public void obst() {//TODO MUST make it O(n^2)
+        //TODO BROKEN
         int s = size();
         ArrayList<BST> nodeArr;
         MyHashMap<Integer> rootMap, costMap, freqSum;
@@ -136,9 +134,9 @@ public class BST { // Binary Search Tree implementation
         int minCost = Integer.MAX_VALUE;
         if(bound < l)
             bound = l;
-        int leftRootBound = l, rightRootBound = bound+1;
+        int leftRootBound = l, rightRootBound = bound;
         int cost = minCost, index = l;
-        for (int i = bound; i <= r; i++) {//TODO there are cases in which loop is skipped
+        for (int i = bound; i <= r; i++) {
             getRootMap(leftRootBound, l, i - 1, freqSum, rootMap, costMap);
             getRootMap(rightRootBound, i + 1, r, freqSum, rootMap, costMap);
             leftRootBound = rootMap.get(l, i - 1);
@@ -180,7 +178,7 @@ public class BST { // Binary Search Tree implementation
             right.getArr(arr);
     }
 
-    public void print() {
+    public void print() {//TODO output modified
         inorder(tree -> {
             System.out.println("[" + tree.element + ":" + tree.frequency + ":" + tree.accessCount + "]");
             return 0;
