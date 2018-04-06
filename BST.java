@@ -13,7 +13,7 @@ public class BST { // Binary Search Tree implementation
 
     //used only in building obst
     private static ArrayList<BST> nodeArr;
-    private static MyHashMap<Integer> rootMap, costMap, freqSum;
+    private static int[][] rootMap, costMap, freqSum;
 
     public BST() {
         element = null;
@@ -85,9 +85,9 @@ public class BST { // Binary Search Tree implementation
     public void obst() {
         int s = size();
         nodeArr = new ArrayList<>();
-        rootMap = new MyHashMap<>();
-        costMap = new MyHashMap<>();
-        freqSum = new MyHashMap<>();
+        rootMap = new int[s + 1][];//int[high][low]
+        costMap = new int[s + 1][];
+        freqSum = new int[s + 1][];
         nodeArr.add(null);
 
         BST newRoot = new BST();
@@ -98,45 +98,49 @@ public class BST { // Binary Search Tree implementation
         //index 0 of nodeArr will have null pointer
         //null element will be used to make empty tree point to null
 
-        for (int left = 1; left <= s; left++) {//adds frequency for every range possible
-            int sumCost = nodeArr.get(left).frequency;
-            freqSum.put(left, left, sumCost);
-            costMap.put(left, left, sumCost);//also initialize cost for single or empty tree
-            costMap.put(left, left - 1, 0);
-            rootMap.put(left, left - 1, 0);
-            rootMap.put(left, left, left);
-            for (int right = left + 1; right <= s; right++) {
-                sumCost += nodeArr.get(right).frequency;
-                freqSum.put(left, right, sumCost);
+
+        for (int high = 0; high <= s; high++) {//adds frequency for every range possible
+            freqSum[high] = new int[high + 2];
+            rootMap[high] = new int[high + 2];
+            costMap[high] = new int[high + 2];
+
+            int sumCost = (high == 0) ? 0 : nodeArr.get(high).frequency;
+
+            freqSum[high][high] = sumCost;
+            costMap[high][high] = sumCost;//also initialize cost for single or empty tree
+            rootMap[high][high] = high;
+            for (int low = high - 1; low > 0; low--) {
+                sumCost += nodeArr.get(low).frequency;
+                freqSum[high][low] = sumCost;
             }
         }
-        costMap.put(s + 1, s, 0);
-        rootMap.put(s + 1, s, 0);
+        costMap[0][1] = 0;
+        rootMap[0][1] = 0;
 
 
         for (int r = 2; r <= s; r++) {
             int lBound, rBound;
             for (int l = r - 1; l > 0; l--) {
-                lBound = rootMap.get(l, r - 1);
-                rBound = rootMap.get(l + 1, r);
+                lBound = rootMap[r - 1][l];
+                rBound = rootMap[r][l + 1];
                 int minCost = Integer.MAX_VALUE;
                 int cost, index = l;
 
                 for (int i = lBound; i <= rBound; i++) {
-                    cost = costMap.get(l, i - 1) + costMap.get(i + 1, r) + freqSum.get(l, r);
+                    cost = costMap[i - 1][l] + costMap[r][i + 1] + freqSum[r][l];
                     if (cost < minCost) {
                         minCost = cost;
                         index = i;
                     }
                 }
-                costMap.put(l, r, minCost);
-                rootMap.put(l, r, index);
+                costMap[r][l] = minCost;
+                rootMap[r][l] = index;
             }
         }
 
 
         build(1, s);
-        BST newOBSTRoot = nodeArr.get(rootMap.get(1, s));
+        BST newOBSTRoot = nodeArr.get(rootMap[s][1]);
         copy(newOBSTRoot);
         OBSTified = true;
     }    // Set OBSTified to true.
@@ -147,7 +151,7 @@ public class BST { // Binary Search Tree implementation
             return null;
         BST root;
         int index;
-        index = rootMap.get(left, right);
+        index = rootMap[right][left];
         root = nodeArr.get(index);
 
         if (root == null)
@@ -190,23 +194,6 @@ public class BST { // Binary Search Tree implementation
         right = tree.right;
     }
 
-    private class MyHashMap<V> extends HashMap<Long, V> {//takes two keys instead of one
-
-        //TODO this class seems to be slowing down
-
-        private V get(int key1, int key2) {
-            return super.get(getKey(key1, key2));
-        }
-
-        private void put(int key1, int key2, V obj) {
-            super.put(getKey(key1, key2), obj);
-        }
-
-        private long getKey(int x, int y) {// Cantor pairing function
-            // produces one unique key from two nonnegative integers
-            return (x + y) * (x + y + 1) / 2 + y;
-        }
-    }
 
     private interface getVal {//used to recursively add certain element of all nodes
 
