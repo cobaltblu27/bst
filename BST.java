@@ -114,9 +114,6 @@ public class BST { // Binary Search Tree implementation
                 freqSum[high][low] = sumCost;
             }
         }
-        costMap[0][1] = 0;
-        rootMap[0][1] = 0;
-
 
         for (int r = 2; r <= s; r++) {
             int lBound, rBound;
