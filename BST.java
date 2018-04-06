@@ -37,8 +37,9 @@ public class BST { // Binary Search Tree implementation
         }
     }
 
-    public boolean find(String key) {//TODO accessCount is half the answer
+    public boolean find(String key) {
         accessCount++;
+        accessCount++;//TODO accessCount is half the answer
         if (element.compareTo(key) > 0)
             return left != null && left.find(key);
         else if (element.compareTo(key) < 0)
@@ -103,6 +104,8 @@ public class BST { // Binary Search Tree implementation
 
         for (int left = 1; left <= s; left++) {//adds frequency for every range possible
             freqSum.put(left, left, nodeArr.get(left).frequency);
+            costMap.put(left, left, nodeArr.get(left).frequency);
+            rootMap.put(left, left, left);
             for (int right = left + 1; right <= s; right++)
                 freqSum.put(left, right, freqSum.get(left, right - 1) + nodeArr.get(right).frequency);
         }
@@ -110,8 +113,9 @@ public class BST { // Binary Search Tree implementation
         getRootMap(1, 1, s, freqSum, rootMap, costMap);
 
 
+
         build(1, s, nodeArr, rootMap);
-        BST newOBSTRoot = nodeArr.get(rootMap.get(1,s));
+        BST newOBSTRoot = nodeArr.get(rootMap.get(1, s));
         element = newOBSTRoot.element;
         frequency = newOBSTRoot.frequency;
         right = newOBSTRoot.right;
@@ -120,25 +124,23 @@ public class BST { // Binary Search Tree implementation
     }    // Set OBSTified to true.
 
     private void getRootMap(int bound, int l, int r, MyHashMap<Integer> freqSum, MyHashMap<Integer> rootMap, MyHashMap<Integer> costMap) {
-        if (rootMap.containsKey(l, r))
-            return;
-        if (l == r) {
-            rootMap.put(l, r, l);
-            costMap.put(l, r, freqSum.get(l, r));
-            return;
-        } else if (l > r) {
+        if (l > r) {
             rootMap.put(l, r, 0);
             costMap.put(l, r, 0);
             return;
         }
         int minCost = Integer.MAX_VALUE;
-        if(bound < l)
+        if (bound < l)
             bound = l;
         int leftRootBound = l, rightRootBound = bound;
-        int cost = minCost, index = l;
-        for (int i = bound; i <= r; i++) {
-            getRootMap(leftRootBound, l, i - 1, freqSum, rootMap, costMap);
-            getRootMap(rightRootBound, i + 1, r, freqSum, rootMap, costMap);
+        int cost , index = l;
+        for (int i = bound; i <= r; i++) {//TODO bounds unused for correcting algorithm first
+            if (!costMap.containsKey(l, i - 1))
+                getRootMap(leftRootBound, l, i - 1, freqSum, rootMap, costMap);
+
+            if (!costMap.containsKey(i + 1, r))
+                getRootMap(rightRootBound, i + 1, r, freqSum, rootMap, costMap);
+
             leftRootBound = rootMap.get(l, i - 1);
             rightRootBound = rootMap.get(i + 1, r);
             cost = costMap.get(l, i - 1) + costMap.get(i + 1, r) + freqSum.get(l, r);
@@ -147,8 +149,8 @@ public class BST { // Binary Search Tree implementation
                 index = i;
             }
         }
-        costMap.put(l,r,cost);
-        rootMap.put(l,r,index);
+        costMap.put(l, r, minCost);
+        rootMap.put(l, r, index);
 
     }
 
@@ -178,7 +180,7 @@ public class BST { // Binary Search Tree implementation
             right.getArr(arr);
     }
 
-    public void print() {//TODO output modified
+    public void print() {
         inorder(tree -> {
             System.out.println("[" + tree.element + ":" + tree.frequency + ":" + tree.accessCount + "]");
             return 0;
