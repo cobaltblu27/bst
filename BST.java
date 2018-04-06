@@ -11,6 +11,9 @@ public class BST { // Binary Search Tree implementation
     protected int accessCount;
     private int length;
 
+    //used only in building obst
+    private static ArrayList<BST> nodeArr;
+    private static MyHashMap<Integer> rootMap, costMap, freqSum;
 
     public BST() {
         element = null;
@@ -39,7 +42,6 @@ public class BST { // Binary Search Tree implementation
 
     public boolean find(String key) {
         accessCount++;
-        accessCount++;//TODO accessCount is half the answer
         if (element.compareTo(key) > 0)
             return left != null && left.find(key);
         else if (element.compareTo(key) < 0)
@@ -80,81 +82,67 @@ public class BST { // Binary Search Tree implementation
 
     }    // Set NOBSTified to true.
 
-    public void obst() {//TODO MUST make it O(n^2)
-        //TODO BROKEN
+    public void obst() {
         int s = size();
-        ArrayList<BST> nodeArr;
-        MyHashMap<Integer> rootMap, costMap, freqSum;
         nodeArr = new ArrayList<>();
         rootMap = new MyHashMap<>();
         costMap = new MyHashMap<>();
         freqSum = new MyHashMap<>();
         nodeArr.add(null);
 
-        BST newroot = new BST();
-        newroot.element = element;
-        newroot.frequency = frequency;
-        newroot.right = right;
-        newroot.left = left;
+        BST newRoot = new BST();
+        newRoot.copy(this);
 
-        newroot.getArr(nodeArr);
+        newRoot.getArr(nodeArr);
         //nodeArr consists of every BST in order
         //index 0 of nodeArr will have null pointer
         //null element will be used to make empty tree point to null
 
         for (int left = 1; left <= s; left++) {//adds frequency for every range possible
-            freqSum.put(left, left, nodeArr.get(left).frequency);
-            costMap.put(left, left, nodeArr.get(left).frequency);
+            int sumCost = nodeArr.get(left).frequency;
+            freqSum.put(left, left, sumCost);
+            costMap.put(left, left, sumCost);//also initialize cost for single or empty tree
+            costMap.put(left, left - 1, 0);
+            rootMap.put(left, left - 1, 0);
             rootMap.put(left, left, left);
-            for (int right = left + 1; right <= s; right++)
-                freqSum.put(left, right, freqSum.get(left, right - 1) + nodeArr.get(right).frequency);
+            for (int right = left + 1; right <= s; right++) {
+                sumCost += nodeArr.get(right).frequency;
+                freqSum.put(left, right, sumCost);
+            }
+        }
+        costMap.put(s + 1, s, 0);
+        rootMap.put(s + 1, s, 0);
+
+
+        for (int r = 2; r <= s; r++) {
+            int lBound, rBound;
+            for (int l = r - 1; l > 0; l--) {
+                lBound = rootMap.get(l, r - 1);
+                rBound = rootMap.get(l + 1, r);
+                int minCost = Integer.MAX_VALUE;
+                int cost, index = l;
+
+                for (int i = lBound; i <= rBound; i++) {
+                    cost = costMap.get(l, i - 1) + costMap.get(i + 1, r) + freqSum.get(l, r);
+                    if (cost < minCost) {
+                        minCost = cost;
+                        index = i;
+                    }
+                }
+                costMap.put(l, r, minCost);
+                rootMap.put(l, r, index);
+            }
         }
 
-        getRootMap(1, 1, s, freqSum, rootMap, costMap);
 
-
-
-        build(1, s, nodeArr, rootMap);
+        build(1, s);
         BST newOBSTRoot = nodeArr.get(rootMap.get(1, s));
-        element = newOBSTRoot.element;
-        frequency = newOBSTRoot.frequency;
-        right = newOBSTRoot.right;
-        left = newOBSTRoot.left;
+        copy(newOBSTRoot);
         OBSTified = true;
     }    // Set OBSTified to true.
 
-    private void getRootMap(int bound, int l, int r, MyHashMap<Integer> freqSum, MyHashMap<Integer> rootMap, MyHashMap<Integer> costMap) {
-        if (l > r) {
-            rootMap.put(l, r, 0);
-            costMap.put(l, r, 0);
-            return;
-        }
-        int minCost = Integer.MAX_VALUE;
-        if (bound < l)
-            bound = l;
-        int leftRootBound = l, rightRootBound = bound;
-        int cost , index = l;
-        for (int i = bound; i <= r; i++) {//TODO bounds unused for correcting algorithm first
-            if (!costMap.containsKey(l, i - 1))
-                getRootMap(leftRootBound, l, i - 1, freqSum, rootMap, costMap);
 
-            if (!costMap.containsKey(i + 1, r))
-                getRootMap(rightRootBound, i + 1, r, freqSum, rootMap, costMap);
-
-            leftRootBound = rootMap.get(l, i - 1);
-            rightRootBound = rootMap.get(i + 1, r);
-            cost = costMap.get(l, i - 1) + costMap.get(i + 1, r) + freqSum.get(l, r);
-            if (cost < minCost) {
-                minCost = cost;
-                index = i;
-            }
-        }
-        costMap.put(l, r, minCost);
-        rootMap.put(l, r, index);
-
-    }
-
-    private BST build(int left, int right, ArrayList<BST> nodeArr, MyHashMap<Integer> rootMap) {
+    private BST build(int left, int right) {
         if (left > right)
             return null;
         BST root;
@@ -162,12 +150,11 @@ public class BST { // Binary Search Tree implementation
         index = rootMap.get(left, right);
         root = nodeArr.get(index);
 
-
         if (root == null)
             return null;
 
-        root.right = build(index + 1, right, nodeArr, rootMap);
-        root.left = build(left, index - 1, nodeArr, rootMap);
+        root.right = build(index + 1, right);
+        root.left = build(left, index - 1);
 
         return root;
     }
@@ -205,12 +192,10 @@ public class BST { // Binary Search Tree implementation
 
     private class MyHashMap<V> extends HashMap<Long, V> {//takes two keys instead of one
 
+        //TODO this class seems to be slowing down
+
         private V get(int key1, int key2) {
             return super.get(getKey(key1, key2));
-        }
-
-        private boolean containsKey(int key1, int key2) {
-            return keySet().contains(getKey(key1, key2));
         }
 
         private void put(int key1, int key2, V obj) {
