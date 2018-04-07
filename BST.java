@@ -13,7 +13,7 @@ public class BST { // Binary Search Tree implementation
 
     //used only in building obst
     private static ArrayList<BST> nodeArr;
-    private static int[][] rootMap, costMap, freqSum;
+    private static int[][] rootMap;
 
     public BST() {
         element = null;
@@ -86,8 +86,8 @@ public class BST { // Binary Search Tree implementation
         int s = size();
         nodeArr = new ArrayList<>();
         rootMap = new int[s + 1][];//int[high][low]
-        costMap = new int[s + 1][];
-        freqSum = new int[s + 1][];
+        int[][] costMap = new int[s + 1][];
+        int[][] freqSum = new int[s + 1][];
         nodeArr.add(null);
 
         BST newRoot = new BST();
