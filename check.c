@@ -13,19 +13,19 @@ int main(){
     scanf("%c", &(command[0]));
 
     if(command[0] == 'y'){
-        system("java MainBst public/10words.txt public/10words.txt > 10words.out");
+        system("java MainBst public/10words.txt public/10words.txt > output/10words.out");
         printf("10words complete\n");
-        system("java MainBst public/1000words.txt public/2000words.txt > 1000words.out");
+        system("java MainBst public/1000words.txt public/2000words.txt > output/1000words.out");
         printf("1000words complete\n");
-        system("java MainBst public/1000words.txt public/2000words2.txt > 1000words2.output_str");
+        system("java MainBst public/1000words.txt public/2000words2.txt > output/1000words2.out");
         printf("1000words2 complete\n");
-        system("java -Xms1024m -Xmx4096m MainBst public/sawyer.txt public/sawyer.txt > sawyer.out");
+        system("java -Xms1024m -Xmx4096m MainBst public/sawyer.txt public/sawyer.txt > output/sawyer.out");
         printf("sawyer complete\n");
-        system("java -Xms1024m -Xmx4096m MainBst public/sawyer.txt public/mohicans.txt > sawyer-mohicans.out");
+        system("java -Xms1024m -Xmx4096m MainBst public/sawyer.txt public/mohicans.txt > output/sawyer-mohicans.out");
         printf("sawyer-mohicans complete\n");
-        system("java -Xms1024m -Xmx4096m MainBst public/mohicans.txt public/mohicans.txt > mohicans.out");
+        system("java -Xms1024m -Xmx4096m MainBst public/mohicans.txt public/mohicans.txt > output/mohicans.out");
         printf("mohicans complete\n");
-        system("java -Xms1024m -Xmx4096m MainBst public/mohicans.txt public/sawyer.txt > mohicans-sawyer.out");
+        system("java -Xms1024m -Xmx4096m MainBst public/mohicans.txt public/sawyer.txt > output/mohicans-sawyer.out");
         printf("mohicans-sawyer complete\n\n");
     }
 

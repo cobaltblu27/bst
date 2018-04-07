@@ -9,7 +9,6 @@ public class BST { // Binary Search Tree implementation
     protected BST right;
     protected int frequency;
     protected int accessCount;
-    private int length;
 
     //used only in building obst
     private static ArrayList<BST> nodeArr;
@@ -69,13 +68,8 @@ public class BST { // Binary Search Tree implementation
         }, this);
     }
 
-    public int sumWeightedPath() {//TODO BROKEN
-        length = 1;
-        return inorder(tree -> {
-            if (tree.right != null) tree.right.length = tree.length + 1;
-            if (tree.left != null) tree.left.length = tree.length + 1;
-            return tree.length * tree.frequency;
-        }, this);
+    public int sumWeightedPath() {
+        return inorder(BST::sumFreq, this);
     }
 
     public void nobst() {//TODO

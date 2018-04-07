@@ -1,8 +1,13 @@
 public class AVL extends BST {
-
+    private int height;
 
     public AVL() {
-        super();
+        element = null;
+        left = null;
+        right = null;
+        frequency = 0;
+        accessCount = 0;
+        height = 0;
     }
 
     public void insert(String key) {
@@ -13,21 +18,23 @@ public class AVL extends BST {
             if (left == null)
                 left = new AVL();
             left.insert(key);
-            if (getHeight((AVL) left) - getHeight((AVL) right) == 2) {
+            if (getHeight(left) - getHeight(right) == 2) {
                 if (left.element.compareTo(key) > 0)
                     rightSpin();
                 else
                     leftRightSpin();
             }
+            getHeight(this);
         } else if (element.compareTo(key) < 0) {
             if (right == null)
                 right = new AVL();
             right.insert(key);
-            if (getHeight((AVL) left) - getHeight((AVL) right) == -2) {
+            if (getHeight(left) - getHeight(right) == -2) {
                 if (right.element.compareTo(key) < 0)
                     leftSpin();
                 else rightLeftSpin();
             }
+            getHeight(this);
         } else {
             frequency++;
         }
@@ -71,13 +78,16 @@ public class AVL extends BST {
         left.right = rightLeft;
     }
 
-    private int getHeight(AVL tree) {
+    private int getHeight(BST tree) {
         if (tree == null)
             return 0;
         int leftH, rightH;
-        leftH = getHeight((AVL) tree.left);
-        rightH = getHeight((AVL) tree.right);
-        return Math.max(leftH, rightH) + 1;
+        if(right != null && left != null && Math.max(((AVL)left).height,((AVL)right).height) +1==height)
+            return height;
+        leftH = getHeight(((AVL)tree).left);
+        rightH = getHeight(((AVL)tree).right);
+        ((AVL)tree).height = Math.max(leftH,rightH) + 1;
+        return ((AVL)tree).height;
     }
 
 }
