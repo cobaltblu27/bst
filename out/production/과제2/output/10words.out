@@ -49,4 +49,4 @@ Sum of Weighted Path Lengths (OBST): 17
 [d:0:3]
 Total number of node accesses (OBST): 17 (failed searches: 0)
 CPU time for searching keys (OBST): 0 millisec
-Memory consumption: 3199272 bytes
+Memory consumption: 3207288 bytes

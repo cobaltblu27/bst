@@ -17262,7 +17262,7 @@
 [�:2:0]
 [�lan:1:0]
 [�tre:1:0]
-CPU time to build a(n) BST: 301 millisec
+CPU time to build a(n) BST: 290 millisec
 [&c.:1:0]
 [&c.,:1:0]
 ['Tis:45:0]
@@ -34527,7 +34527,7 @@ CPU time to build a(n) BST: 301 millisec
 [�:2:0]
 [�lan:1:0]
 [�tre:1:0]
-CPU time to build a(n) BST: 167 millisec
+CPU time to build a(n) BST: 275 millisec
 [&c.:1:0]
 [&c.,:1:0]
 ['Tis:45:0]
@@ -51792,7 +51792,7 @@ CPU time to build a(n) BST: 167 millisec
 [�:2:0]
 [�lan:1:0]
 [�tre:1:0]
-CPU time to build a(n) BST: 151 millisec
+CPU time to build a(n) BST: 189 millisec
 [&c.:1:0]
 [&c.,:1:0]
 ['Tis:45:0]
@@ -69057,7 +69057,7 @@ CPU time to build a(n) BST: 151 millisec
 [�:2:0]
 [�lan:1:0]
 [�tre:1:0]
-CPU time to build a(n) AVL: 196 millisec
+CPU time to build a(n) AVL: 273 millisec
 Number of words in the BST: 17264 (number of insertions: 149152)
 Sum of Weighted Path Lengths (BST): 1867938
 The word `Adventures' not found.
@@ -101677,7 +101677,7 @@ The word `----------------------------------------------------------------------
 [�lan:0:1]
 [�tre:0:0]
 Total number of node accesses (BST): 976364 (failed searches: 15352)
-CPU time for searching keys (BST): 129 millisec
+CPU time for searching keys (BST): 141 millisec
 Sum of Weighted Path Lengths (AVL): 1689914
 The word `Adventures' not found.
 The word `Tom' not found.
@@ -134296,7 +134296,7 @@ The word `----------------------------------------------------------------------
 [�lan:0:1]
 [�tre:0:0]
 Total number of node accesses (AVL): 838475 (failed searches: 15352)
-CPU time for searching keys (AVL): 121 millisec
+CPU time for searching keys (AVL): 135 millisec
 CPU time to convert to an NOBST: 0 millisec
 Sum of Weighted Path Lengths (NOBST): 1867938
 The word `Adventures' not found.
@@ -166916,8 +166916,8 @@ The word `----------------------------------------------------------------------
 [�lan:0:1]
 [�tre:0:0]
 Total number of node accesses (BST): 976364 (failed searches: 15352)
-CPU time for searching keys (BST): 110 millisec
-CPU time to convert to an OBST: 5275 millisec
+CPU time for searching keys (BST): 134 millisec
+CPU time to convert to an OBST: 4747 millisec
 Sum of Weighted Path Lengths (OBST): 1196265
 The word `Adventures' not found.
 The word `Tom' not found.
@@ -199536,5 +199536,5 @@ The word `----------------------------------------------------------------------
 [�lan:0:0]
 [�tre:0:0]
 Total number of node accesses (OBST): 655040 (failed searches: 15352)
-CPU time for searching keys (OBST): 92 millisec
-Memory consumption: 1838079320 bytes
+CPU time for searching keys (OBST): 112 millisec
+Memory consumption: 1842744200 bytes

@@ -12521,7 +12521,7 @@
 [zebras:1:0]
 [zenith:1:0]
 [zephyr:1:0]
-CPU time to build a(n) BST: 134 millisec
+CPU time to build a(n) BST: 219 millisec
 [!:4:0]
 [!":1:0]
 [":61:0]
@@ -25045,7 +25045,7 @@ CPU time to build a(n) BST: 134 millisec
 [zebras:1:0]
 [zenith:1:0]
 [zephyr:1:0]
-CPU time to build a(n) BST: 99 millisec
+CPU time to build a(n) BST: 136 millisec
 [!:4:0]
 [!":1:0]
 [":61:0]
@@ -37569,7 +37569,7 @@ CPU time to build a(n) BST: 99 millisec
 [zebras:1:0]
 [zenith:1:0]
 [zephyr:1:0]
-CPU time to build a(n) BST: 64 millisec
+CPU time to build a(n) BST: 113 millisec
 [!:4:0]
 [!":1:0]
 [":61:0]
@@ -50093,7 +50093,7 @@ CPU time to build a(n) BST: 64 millisec
 [zebras:1:0]
 [zenith:1:0]
 [zephyr:1:0]
-CPU time to build a(n) AVL: 126 millisec
+CPU time to build a(n) AVL: 136 millisec
 Number of words in the BST: 12523 (number of insertions: 71910)
 Sum of Weighted Path Lengths (BST): 1028738
 [!:0:5]
@@ -62620,7 +62620,7 @@ Sum of Weighted Path Lengths (BST): 1028738
 [zenith:0:4]
 [zephyr:0:10]
 Total number of node accesses (BST): 1028738 (failed searches: 0)
-CPU time for searching keys (BST): 82 millisec
+CPU time for searching keys (BST): 111 millisec
 Sum of Weighted Path Lengths (AVL): 756771
 [!:0:5]
 [!":0:1]
@@ -75146,7 +75146,7 @@ Sum of Weighted Path Lengths (AVL): 756771
 [zenith:0:5]
 [zephyr:0:1]
 Total number of node accesses (AVL): 756771 (failed searches: 0)
-CPU time for searching keys (AVL): 73 millisec
+CPU time for searching keys (AVL): 89 millisec
 CPU time to convert to an NOBST: 0 millisec
 Sum of Weighted Path Lengths (NOBST): 1028738
 [!:0:5]
@@ -87673,8 +87673,8 @@ Sum of Weighted Path Lengths (NOBST): 1028738
 [zenith:0:4]
 [zephyr:0:10]
 Total number of node accesses (BST): 1028738 (failed searches: 0)
-CPU time for searching keys (BST): 75 millisec
-CPU time to convert to an OBST: 2441 millisec
+CPU time for searching keys (BST): 100 millisec
+CPU time to convert to an OBST: 2982 millisec
 Sum of Weighted Path Lengths (OBST): 585552
 [!:0:5]
 [!":0:1]
@@ -100200,5 +100200,5 @@ Sum of Weighted Path Lengths (OBST): 585552
 [zenith:0:3]
 [zephyr:0:1]
 Total number of node accesses (OBST): 585552 (failed searches: 0)
-CPU time for searching keys (OBST): 41 millisec
-Memory consumption: 988310288 bytes
+CPU time for searching keys (OBST): 39 millisec
+Memory consumption: 982033968 bytes

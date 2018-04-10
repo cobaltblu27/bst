@@ -87,7 +87,11 @@ public class BST { // Binary Search Tree implementation
         BST newRoot = new BST();
         newRoot.copy(this);
 
-        newRoot.getArr(nodeArr);
+        inorder(tree -> {
+            nodeArr.add(tree);
+            return 0;
+        }, newRoot);
+
         //nodeArr consists of every BST in order
         //index 0 of nodeArr will have null pointer
         //null element will be used to make empty tree point to null
@@ -109,7 +113,7 @@ public class BST { // Binary Search Tree implementation
             }
         }
 
-        for (int r = 2; r <= s; r++) {
+        for (int r = 2; r <= s; r++) {//stores optimal root in array for every range possible
             int lBound, rBound;
             for (int l = r - 1; l > 0; l--) {
                 lBound = rootMap[r - 1][l];
@@ -130,7 +134,7 @@ public class BST { // Binary Search Tree implementation
         }
 
 
-        build(1, s);
+        build(1, s);//build tree out of optimal roots recursively
         BST newOBSTRoot = nodeArr.get(rootMap[s][1]);
         copy(newOBSTRoot);
         OBSTified = true;
@@ -152,14 +156,6 @@ public class BST { // Binary Search Tree implementation
         root.left = build(left, index - 1);
 
         return root;
-    }
-
-    private void getArr(ArrayList<BST> arr) {
-        if (left != null)
-            left.getArr(arr);
-        arr.add(this);
-        if (right != null)
-            right.getArr(arr);
     }
 
     public void print() {

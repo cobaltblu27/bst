@@ -249,7 +249,7 @@
 [with:8:0]
 [within}:2:0]
 [{\tt:4:0]
-CPU time to build a(n) BST: 14 millisec
+CPU time to build a(n) BST: 19 millisec
 [$R$:2:0]
 [$S$.:2:0]
 [$\dist{r,s}$:2:0]
@@ -501,7 +501,7 @@ CPU time to build a(n) BST: 14 millisec
 [with:8:0]
 [within}:2:0]
 [{\tt:4:0]
-CPU time to build a(n) BST: 4 millisec
+CPU time to build a(n) BST: 5 millisec
 [$R$:2:0]
 [$S$.:2:0]
 [$\dist{r,s}$:2:0]
@@ -1005,7 +1005,7 @@ CPU time to build a(n) BST: 3 millisec
 [with:8:0]
 [within}:2:0]
 [{\tt:4:0]
-CPU time to build a(n) AVL: 5 millisec
+CPU time to build a(n) AVL: 4 millisec
 Number of words in the BST: 251 (number of insertions: 1000)
 Sum of Weighted Path Lengths (BST): 8606
 The word `Edgar' not found.
@@ -6392,8 +6392,8 @@ The word `' not found.
 [within}:0:40]
 [{\tt:0:40]
 Total number of node accesses (BST): 19556 (failed searches: 1541)
-CPU time for searching keys (BST): 11 millisec
-CPU time to convert to an OBST: 6 millisec
+CPU time for searching keys (BST): 16 millisec
+CPU time to convert to an OBST: 9 millisec
 Sum of Weighted Path Lengths (OBST): 5802
 The word `Edgar' not found.
 The word `Allan' not found.
@@ -8188,5 +8188,5 @@ The word `' not found.
 [within}:0:40]
 [{\tt:0:40]
 Total number of node accesses (OBST): 15122 (failed searches: 1541)
-CPU time for searching keys (OBST): 10 millisec
-Memory consumption: 15361624 bytes
+CPU time for searching keys (OBST): 15 millisec
+Memory consumption: 15352432 bytes
