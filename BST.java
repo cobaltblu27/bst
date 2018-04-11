@@ -73,8 +73,56 @@ public class BST { // Binary Search Tree implementation
     }
 
     public void nobst() {//TODO
+        int s = size();
+        nodeArr = new ArrayList<>();
+        rootMap = new int[s + 1][];//int[high][low]
 
+        int[] freqSum = new int[s + 1];
+
+        BST newRoot = new BST();
+        newRoot.copy(this);
+
+        nodeArr.add(null);
+        inorder(tree -> {
+            nodeArr.add(tree);
+            return 0;
+        }, newRoot);
+
+        freqSum[0] = 0;
+
+        for (int i = 1; i <= s; i++) {
+            rootMap[i] = new int[i + 2];
+            freqSum[i] = nodeArr.get(i).frequency + freqSum[i - 1];
+        }
+
+        nobstify(freqSum, 1, s);
+
+        build(1, s);
+
+        BST newOBSTRoot = nodeArr.get(rootMap[s][1]);
+        copy(newOBSTRoot);
+
+        NOBSTified = true;
     }    // Set NOBSTified to true.
+
+    private void nobstify(int[] freqSum, int left, int right) {
+        if (left > right)
+            return;
+        int leftSum, rightSum;
+        int i = left;
+        while(i <= right){
+            leftSum = freqSum[i - 1] - freqSum[left - 1];
+            rightSum = freqSum[right] - freqSum[i];
+            if (i == right ||
+                    Math.abs(leftSum - rightSum) <= Math.abs(leftSum - rightSum + nodeArr.get(i).frequency + nodeArr.get(i + 1).frequency))
+                break;
+            i++;
+        }
+
+        rootMap[right][left] = i;
+        nobstify(freqSum, left, i - 1);
+        nobstify(freqSum, i + 1, right);
+    }
 
     public void obst() {
         int s = size();
